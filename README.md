@@ -1,56 +1,29 @@
-# Customer Churn Prediction & Customer Lifetime Value (CLV) Engine
+# Telco Churn Prediction & LTV Engine
 
-## Overview
+Overview:
+Predict customer churn and estimate Customer Lifetime Value (LTV) for Telco dataset. Provides training scripts, SHAP explainability, FastAPI inference endpoints, and instructions for visualization with Apache Superset.
 
-This project is an end-to-end Machine Learning solution designed to predict customer churn and estimate Customer Lifetime Value (CLV). It helps businesses identify customers who are likely to leave and prioritize high-value customers through predictive analytics and data-driven insights.
+Prerequisites:
+- Docker & docker-compose
+- (Optional) Python 3.11 and virtualenv to run locally
 
-The project includes data preprocessing, exploratory data analysis (EDA), feature engineering, machine learning model development, API deployment using FastAPI, PostgreSQL database integration, and interactive business dashboards.
+Quickstart (docker-compose):
+1. Copy .env.example to .env and set values.
+2. Place telco_customer_churn.csv in ./data/
+3. Start services:
+   docker-compose up -d --build
+4. Load dataset into Postgres:
+   docker exec -it <app_container_name> python src/etl/load_data_to_postgres.py /app/data/telco_customer_churn.csv
+   (or run locally: python src/etl/load_data_to_postgres.py data/telco_customer_churn.csv)
+5. Train models:
+   docker exec -it <app_container_name> python src/models/train_models.py
+   This will create models in /app/models inside container.
+6. Start API:
+   accessible at http://localhost:8000
+   - POST /predict for single customer JSON
+   - POST /predict_batch (multipart CSV)
 
-## Features
+Superset:
+- Access
 
-* Customer churn prediction using Machine Learning
-* Customer Lifetime Value (CLV) estimation
-* Exploratory Data Analysis (EDA)
-* Data preprocessing and feature engineering
-* Model training and evaluation
-* REST API built with FastAPI
-* PostgreSQL database integration
-* Interactive dashboards using Apache Superset or Metabase
-* Docker support for easy deployment
-
-## Tech Stack
-
-* Python
-* PostgreSQL
-* Pandas
-* NumPy
-* Scikit-learn
-* XGBoost
-* FastAPI
-* Apache Superset / Metabase
-* Docker
-* Git & GitHub
-* Jupyter Notebook
-
-## Machine Learning Models
-
-* Logistic Regression
-* Random Forest
-* XGBoost
-
-## Project Structure
-
-* Data Collection
-* Data Cleaning
-* Exploratory Data Analysis (EDA)
-* Feature Engineering
-* Model Training
-* Model Evaluation
-* API Development
-* Dashboard Visualization
-* Deployment
-
-## Outcomes
-
-The system predicts customer churn with high accuracy, estimates customer lifetime value, and provides actionable insights that help businesses improve customer retention, reduce revenue loss, and make informed marketing decisions.
 
