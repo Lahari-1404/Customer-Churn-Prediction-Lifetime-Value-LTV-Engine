@@ -1,0 +1,1 @@
+Instructions to connect Superset/Metabase to Postgres and create dashboards. (Plain text, include connection string; create charts for churn_rate_by_contract, top_risk_customers, LTV distribution, combined heatmap of churn_prob vs predicted_ltv.)
