@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-telco}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-telco_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-telco_db}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    ports:
+      - "5432:5432"
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.app
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - MODEL_DIR=/app/models
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  superset:
+    image: apache/superset:2.3.0
+    environment:
+      SUPERSET_LOAD_EXAMPLES: "no"
+    ports:
+      - "8088:8088"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
